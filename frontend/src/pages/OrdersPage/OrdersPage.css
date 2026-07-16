@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fcfcfc;
+    display: block;
+}
+
+.table-container {
+    padding: 40px 0;
+    width: 100%;
+    font-family: "Noto Sans JP", sans-serif;
+    box-sizing: border-box;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: left;
+}
+
+.orders-table th {
+    background-color: #75b851;
+    color: white;
+    padding: 15px 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.orders-table td {
+    padding: 12px 10px;
+    color: #333;
+    border-bottom: 1px solid #ececec;
+}
+
+.orders-table tbody tr:nth-child(even) {
+    background-color: #ececec;
+}
+
+.orders-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}

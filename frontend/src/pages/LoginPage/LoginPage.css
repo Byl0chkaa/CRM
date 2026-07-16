@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
+.login-page-container {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", sans-serif;
+    background-color: #77ba53;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-page-container form {
+    height: 220px;
+    width: 200px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-page-container .form-data {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-page-container input {
+    background-color: #ececec;
+    border: none;
+    border-radius: 8px;
+    height: 45px;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.login-page-container input::placeholder {
+    font-size: 12px;
+}
+
+.login-page-container button {
+    background-color: #44a148;
+    color: #ececec;
+    border: none;
+    border-radius: 8px;
+    height: 45px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.login-page-container button:hover {
+    background-color: #36853a;
+}
