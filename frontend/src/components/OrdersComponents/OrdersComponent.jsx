@@ -19,7 +19,9 @@ const OrdersComponent = ({orders, handleOrdering}) => {
                         <th onClick={() => handleOrdering('status')}>status</th>
                         <th onClick={() => handleOrdering('sum')}>sum</th>
                         <th onClick={() => handleOrdering('alreadyPaid')}>alreadyPaid</th>
+                        <th onClick={() => handleOrdering('group')}>group</th>
                         <th onClick={() => handleOrdering('created_at')}>created_at</th>
+                        <th onClick={() => handleOrdering('manager')}>manager</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -47,7 +47,9 @@ class OrderModel(models.Model):
     status = models.CharField(max_length=9, choices=OrderStatusModel.choices, null=True, blank=True)
     sum = models.IntegerField(null=True, blank=True)
     alreadyPaid = models.IntegerField(null=True, blank=True)
+    group=models.CharField(max_length=25, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    manager=models.CharField(max_length=25, null=True, blank=True)
 
     class Meta:
         db_table = 'orders'

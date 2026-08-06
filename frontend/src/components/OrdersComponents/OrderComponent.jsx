@@ -15,7 +15,9 @@ const OrderComponent = ({order}) => {
             <td>{order.status || 'null'}</td>
             <td>{order.sum ?? 'null'}</td>
             <td>{order.alreadyPaid ?? 'null'}</td>
+            <td>{order.group ?? 'null'}</td>
             <td>{order.created_at || 'null'}</td>
+            <td>{order.manager || 'null'}</td>
         </tr>
     );
 };
