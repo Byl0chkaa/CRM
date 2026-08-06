@@ -1,0 +1,195 @@
+{
+  "info": {
+    "_postman_id": "afaa539b-2b97-40b5-85ca-f6a0be967e96",
+    "name": "CRM",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52315553",
+    "_collection_link": "https://go.postman.co/collection/52315553-afaa539b-2b97-40b5-85ca-f6a0be967e96?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "res = pm.response.json()\r",
+                  "pm.environment.set(\"access\", res.access);\r",
+                  "pm.environment.set(\"refresh\", res.refresh);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "admin@gmail.com",
+                  "type": "text",
+                  "uuid": "3c35e3df-6813-4295-a48f-667f862a7283"
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text",
+                  "uuid": "57ad3e2f-d090-457a-a079-326f6e3dee49"
+                },
+                {
+                  "key": "email",
+                  "value": "test@gmail.com",
+                  "type": "text",
+                  "uuid": "26a6f74e-9442-4088-aa26-b1a753cdd430",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "test",
+                  "type": "text",
+                  "uuid": "28c4b181-d14e-4b64-bc94-24ac339fef73",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}auth/",
+              "host": [
+                "{{host}}auth"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "item": [
+        {
+          "name": "getAllOrders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}orders/?page=2&order=id",
+              "host": [
+                "{{host}}orders"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "order",
+                  "value": "id",
+                  "type": "text"
+                },
+                {
+                  "key": "order",
+                  "value": "name",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "surname",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "email",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "phone",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "age",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "course",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "course_format",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "course_type",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "status",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "sum",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "alreadyPaid",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "created_at",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
