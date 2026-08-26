@@ -36,3 +36,4 @@ class JWTService:
 
         user_id = token_res.payload['user_id']
         return get_object_or_404(UserModel, pk=user_id)
+

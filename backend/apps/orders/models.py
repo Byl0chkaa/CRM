@@ -32,6 +32,8 @@ class OrderStatusModel(models.TextChoices):
     DISAGREED = 'Disagreed'
     DUBBING = 'Dubbing'
 
+class GroupModel(models.Model):
+    group_name = models.CharField(max_length=20, unique=True)
 
 class OrderModel(models.Model):
     name = models.CharField(max_length=25, null=True, blank=True)
@@ -47,9 +49,9 @@ class OrderModel(models.Model):
     status = models.CharField(max_length=9, choices=OrderStatusModel.choices, null=True, blank=True)
     sum = models.IntegerField(null=True, blank=True)
     alreadyPaid = models.IntegerField(null=True, blank=True)
-    group=models.CharField(max_length=25, null=True, blank=True)
+    group=models.ForeignKey(GroupModel, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    manager=models.CharField(max_length=25, null=True, blank=True)
+    manager=models.ForeignKey('user.UserModel', on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
 
     class Meta:
         db_table = 'orders'
