@@ -49,7 +49,7 @@ class AddCommentView(CreateAPIView):
 
         return Response({'comment': serializer.data, 'order': OrderSerializer(order).data}, status=status.HTTP_201_CREATED)
 
-class DeleteOrderManager(GenericAPIView):
+class ReleaseOrderManager(GenericAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsActiveUser, IsAssignmentManager]
     queryset = OrderModel.objects.all()

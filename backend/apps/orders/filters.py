@@ -18,7 +18,7 @@ class OrderFilter(filters.FilterSet):
     course = filters.ChoiceFilter(choices=CourseModel.choices)
     course_format = filters.ChoiceFilter(choices = CourseFormatModel.choices)
     course_type = filters.ChoiceFilter(choices = CourseTypeModel.choices)
-    status = filters.ChoiceFilter(choiсes = OrderStatusModel.choices)
+    status = filters.ChoiceFilter(choices=OrderStatusModel.choices)
     group = filters.CharFilter(field_name='group__group_name', lookup_expr='exact')
 
     filter_my=filters.BooleanFilter(method='filter_my_orders')
