@@ -2,6 +2,8 @@ from core.enums.regex import RegexPhoneNumber
 from django.core import validators as V
 from django.db import models
 
+from apps.user.models import UserModel
+
 
 class CourseModel(models.TextChoices):
     FS = 'FS'
@@ -43,16 +45,30 @@ class OrderModel(models.Model):
         V.RegexValidator(RegexPhoneNumber.PHONE_NUMBER.pattern, RegexPhoneNumber.PHONE_NUMBER.msg)], null=True,
                              blank=True)
     age = models.IntegerField(validators=[V.MinValueValidator(1), V.MaxValueValidator(100)], null=True, blank=True)
-    course = models.CharField(max_length=5, choices=CourseModel.choices)
-    course_format = models.CharField(max_length=6, choices=CourseFormatModel.choices)
-    course_type = models.CharField(max_length=10, choices=CourseTypeModel.choices)
+    course = models.CharField(max_length=5, choices=CourseModel.choices, null=True, blank=True)
+    course_format = models.CharField(max_length=6, choices=CourseFormatModel.choices, null=True, blank=True)
+    course_type = models.CharField(max_length=10, choices=CourseTypeModel.choices, null=True, blank=True)
     status = models.CharField(max_length=9, choices=OrderStatusModel.choices, null=True, blank=True)
     sum = models.IntegerField(null=True, blank=True)
     alreadyPaid = models.IntegerField(null=True, blank=True)
     group=models.ForeignKey(GroupModel, on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     manager=models.ForeignKey('user.UserModel', on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
+    message = models.TextField(null=True, blank=True)
+    utm = models.CharField(max_length=50, null=True, blank=True)
+
 
     class Meta:
         db_table = 'orders'
         ordering = ['-id']
+
+class CommentModel(models.Model):
+    order = models.ForeignKey(OrderModel, on_delete=models.CASCADE, null=True, related_name='comments')
+    user = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, related_name='comments')
+    message = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    class Meta:
+        db_table = 'comments'
+        ordering = ['-created_at']
+

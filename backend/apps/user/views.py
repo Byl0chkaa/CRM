@@ -1,8 +1,10 @@
+from core.pagination import PagePagination
 from core.permissions import IsActiveUser, IsAdminRole
 from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
+from django.db.models import Count
 from rest_framework import status
 from rest_framework.generics import (CreateAPIView, GenericAPIView,
-                                     get_object_or_404)
+                                     ListAPIView, get_object_or_404)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -10,6 +12,15 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from apps.user.models import UserRole
 from apps.user.serializers import (ManagerCreateSerializer, UserModel,
                                    UserSerializer)
+
+
+class ManagerListView(ListAPIView):
+    serializer_class = UserSerializer
+    def get_queryset(self):
+        return UserModel.objects.annotate(total_orders=Count('orders'))
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]
+    pagination_class = PagePagination
 
 
 class CreateManagerView(CreateAPIView):
@@ -67,3 +78,5 @@ class BanUnbanUserView(GenericAPIView):
         user.is_active = is_active
         user.save()
         return Response({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+
+

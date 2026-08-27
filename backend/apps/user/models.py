@@ -25,4 +25,5 @@ class UserModel(AbstractUser, PermissionsMixin, BaseModel):
 
     objects = UserManager()
 
-
+    def __str__(self):
+        return f'{self.name, self.surname}'

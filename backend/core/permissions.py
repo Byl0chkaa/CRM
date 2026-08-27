@@ -20,6 +20,8 @@ class IsAdminRole(HasRole):
 class IsManagerRole(HasRole):
     allowed_roles = [UserRole.MANAGER]
 
+class IsAdminOrManagerRole(HasRole):
+    allowed_roles = [UserRole.ADMIN, UserRole.MANAGER]
 
 class IsOwnerOrAdminRole(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -33,3 +35,9 @@ class IsActiveUser(BasePermission):
         return bool(
             request.user.is_authenticated and request.user.is_active
         )
+
+class IsAssignmentManager(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if obj.manager is None:
+            return True
+        return obj.manager == request.user
