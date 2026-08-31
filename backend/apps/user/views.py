@@ -16,8 +16,11 @@ from apps.user.serializers import (ManagerCreateSerializer, UserModel,
 
 class ManagerListView(ListAPIView):
     serializer_class = UserSerializer
+
     def get_queryset(self):
-        return UserModel.objects.annotate(total_orders=Count('orders'))
+        return UserModel.objects.annotate(total_orders=Count('orders'), in_work=Count('in_work'), agree=Count('agree'),
+                                          disagree=Count('disagree'), dubbing=Count('dubbing'), new=Count('new'))
+
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]
     pagination_class = PagePagination
@@ -53,6 +56,7 @@ class GenerateRecoveryLinkView(GenericAPIView):
             return Response({'recovery_link': recovery_link}, status=status.HTTP_200_OK)
         return Response({'error': 'User account is disabled'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BanUnbanUserView(GenericAPIView):
     queryset = UserModel.objects.all()
     authentication_classes = [JWTAuthentication]
@@ -78,5 +82,3 @@ class BanUnbanUserView(GenericAPIView):
         user.is_active = is_active
         user.save()
         return Response({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
-
-

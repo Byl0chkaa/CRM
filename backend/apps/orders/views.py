@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.orders.filters import OrderFilter
-from apps.orders.models import OrderModel, OrderStatusModel
+from apps.orders.models import CommentModel, OrderModel, OrderStatusModel
 from apps.orders.serializers import CommentSerializer, OrderSerializer
 
 
@@ -47,13 +47,21 @@ class AddCommentView(CreateAPIView):
             order.status = OrderStatusModel.INWORK
             order.save(update_fields=['manager', 'status'])
 
-        return Response({'comment': serializer.data, 'order': OrderSerializer(order).data}, status=status.HTTP_201_CREATED)
+        return Response({'comment': serializer.data, 'order': OrderSerializer(order).data},
+                        status=status.HTTP_201_CREATED)
+
+
+class CommentsListView(ListCreateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsActiveUser, IsAdminOrManagerRole]
+    queryset = CommentModel.objects.all()
+    serializer_class = CommentSerializer
+
 
 class ReleaseOrderManager(GenericAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsActiveUser, IsAssignmentManager]
     queryset = OrderModel.objects.all()
-
 
     def patch(self, request, *args, **kwargs):
         order_id = self.kwargs['order_id']
@@ -69,5 +77,3 @@ class ReleaseOrderManager(GenericAPIView):
 
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
