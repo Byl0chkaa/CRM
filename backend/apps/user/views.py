@@ -1,7 +1,7 @@
 from core.pagination import PagePagination
 from core.permissions import IsActiveUser, IsAdminRole
 from core.services.jwt_service import ActivateToken, JWTService, RecoveryToken
-from django.db.models import Count
+from django.db.models import Count, Q
 from rest_framework import status
 from rest_framework.generics import (CreateAPIView, GenericAPIView,
                                      ListAPIView, get_object_or_404)
@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
+from apps.orders.models import OrderStatusModel
 from apps.user.models import UserRole
 from apps.user.serializers import (ManagerCreateSerializer, UserModel,
                                    UserSerializer)
@@ -18,8 +19,12 @@ class ManagerListView(ListAPIView):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        return UserModel.objects.annotate(total_orders=Count('orders'), in_work=Count('in_work'), agree=Count('agree'),
-                                          disagree=Count('disagree'), dubbing=Count('dubbing'), new=Count('new'))
+        return UserModel.objects.filter(role=UserRole.MANAGER).annotate(total_orders=Count('orders'),
+                                          in_work=Count('orders', filter=Q(orders__status=OrderStatusModel.INWORK)),
+                                          agree=Count('orders', filter=Q(orders__status=OrderStatusModel.AGREED)),
+                                          disagree=Count('orders', filter=Q(orders__status=OrderStatusModel.DISAGREED)),
+                                          dubbing=Count('orders', filter=Q(orders__status=OrderStatusModel.DUBBING)),
+                                          new=Count('orders', filter=Q(orders__status=OrderStatusModel.NEW)));
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]

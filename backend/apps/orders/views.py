@@ -27,19 +27,25 @@ class OrderListView(ListCreateAPIView):
     pagination_class = PagePagination
 
 
-class AddCommentView(CreateAPIView):
+class CommentsView(ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsActiveUser, IsAdminOrManagerRole]
     serializer_class = CommentSerializer
 
-    def perform_create(self, serializer):
+    def get_queryset(self):
+        order_id = self.kwargs['order_id']
+        return CommentModel.objects.filter(order_id=order_id).select_related('user')
+
+    def create(self, request, *args, **kwargs):
         order_id = self.kwargs['order_id']
         order = get_object_or_404(OrderModel, id=order_id)
-        user = self.request.user
+        user = request.user
 
         if order.manager is not None and order.manager != user:
             raise PermissionDenied('This order already has a manager')
 
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save(order=order, user=user)
 
         if order.manager is None or order.status == OrderStatusModel.NEW:
@@ -49,13 +55,6 @@ class AddCommentView(CreateAPIView):
 
         return Response({'comment': serializer.data, 'order': OrderSerializer(order).data},
                         status=status.HTTP_201_CREATED)
-
-
-class CommentsListView(ListCreateAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsActiveUser, IsAdminOrManagerRole]
-    queryset = CommentModel.objects.all()
-    serializer_class = CommentSerializer
 
 
 class ReleaseOrderManager(GenericAPIView):
