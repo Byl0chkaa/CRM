@@ -5,8 +5,7 @@ from apps.user.models import UserModel
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    group = serializers.SlugRelatedField(slug_field='group_name', queryset=GroupModel.objects.all(), required=False,
-                                         allow_null=True)
+    group = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     manager = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
     class Meta:
@@ -15,9 +14,20 @@ class OrderSerializer(serializers.ModelSerializer):
                   'sum', 'alreadyPaid', 'group', 'created_at', 'manager', 'message', 'utm')
         read_only_fields = ('id', 'utm', 'created_at',)
 
+    def update(self, instance, validated_data):
+        if 'group' in validated_data:
+            group_name = validated_data.pop('group')
+            if group_name:
+                group_obj, created = GroupModel.objects.get_or_create(group_name=group_name)
+                instance.group = group_obj
+            else:
+                instance.group = None
+        return super().update(instance, validated_data)
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
+
     class Meta:
         model = CommentModel
         fields = ('id', 'order', 'user', 'message', 'created_at')

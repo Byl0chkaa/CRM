@@ -76,3 +76,12 @@ class ReleaseOrderManager(GenericAPIView):
 
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class EditOrdersView(UpdateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsActiveUser, IsAssignmentManager]
+    queryset = OrderModel.objects.all()
+    serializer_class = OrderSerializer
+
+
+

@@ -1,9 +1,9 @@
-from django.contrib.auth.views import LogoutView
 from django.urls import path
 from rest_framework_simplejwt.views import (TokenObtainPairView,
                                             TokenRefreshView)
 
-from apps.auth.views import ActivateManagerView, RecoverPasswordView
+from apps.auth.views import (ActivateManagerView, LogoutView,
+                             RecoverPasswordView)
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='auth_login'),
