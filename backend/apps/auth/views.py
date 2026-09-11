@@ -21,7 +21,7 @@ class ActivateManagerView(GenericAPIView):
         serializer = PasswordSerializer(data=data)
         user = JWTService.verify_token(token, ActivateToken)
         serializer.is_valid(raise_exception=True)
-        user.set_password(serializer.data['password'])
+        user.set_password(serializer.validated_data['password'])
         user.is_active = True
         user.save()
         serializer = UserSerializer(user)
@@ -37,7 +37,7 @@ class RecoverPasswordView(GenericAPIView):
         serializer = PasswordSerializer(data=data)
         user = JWTService.verify_token(token, RecoveryToken)
         serializer.is_valid(raise_exception=True)
-        user.set_password(serializer.data['password'])
+        user.set_password(serializer.validated_data['password'])
         user.save()
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

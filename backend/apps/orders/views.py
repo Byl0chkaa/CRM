@@ -13,8 +13,10 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.orders.filters import OrderFilter
-from apps.orders.models import CommentModel, OrderModel, OrderStatusModel
-from apps.orders.serializers import CommentSerializer, OrderSerializer
+from apps.orders.models import (CommentModel, GroupModel, OrderModel,
+                                OrderStatusModel)
+from apps.orders.serializers import (CommentSerializer, GroupSerializer,
+                                     OrderSerializer)
 
 
 class OrderListView(ListCreateAPIView):
@@ -82,6 +84,11 @@ class EditOrdersView(UpdateAPIView):
     permission_classes = [IsAuthenticated, IsActiveUser, IsAssignmentManager]
     queryset = OrderModel.objects.all()
     serializer_class = OrderSerializer
+    lookup_url_kwarg = 'order_id'
 
-
-
+class GroupListView(ListCreateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = GroupModel.objects.all()
+    serializer_class = GroupSerializer
+    

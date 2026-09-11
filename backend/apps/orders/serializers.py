@@ -5,7 +5,7 @@ from apps.user.models import UserModel
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    group = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    group = serializers.SlugRelatedField(slug_field='group_name', queryset=GroupModel.objects.all(), required=False)
     manager = serializers.SlugRelatedField(slug_field='name', read_only=True)
 
     class Meta:
@@ -24,6 +24,16 @@ class OrderSerializer(serializers.ModelSerializer):
                 instance.group = None
         return super().update(instance, validated_data)
 
+    def create(self, validated_data):
+        group_name = validated_data.pop('group', None)
+        if group_name:
+            group_obj, created = GroupModel.objects.get_or_create(
+                group_name=group_name
+            )
+            validated_data['group'] = group_obj
+
+        return super().create(validated_data)
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
@@ -41,3 +51,8 @@ class OrdersStatisticsSerializer(serializers.Serializer):
     disagree = serializers.IntegerField()
     dubbing = serializers.IntegerField()
     new = serializers.IntegerField()
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupModel
+        fields = ('id', 'group_name')

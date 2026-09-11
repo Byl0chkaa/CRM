@@ -37,6 +37,9 @@ class OrderStatusModel(models.TextChoices):
 class GroupModel(models.Model):
     group_name = models.CharField(max_length=20, unique=True)
 
+    def __str__(self):
+        return self.group_name
+
 class OrderModel(models.Model):
     name = models.CharField(max_length=25, null=True, blank=True)
     surname = models.CharField(max_length=25, null=True, blank=True)
@@ -55,7 +58,7 @@ class OrderModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     manager=models.ForeignKey('user.UserModel', on_delete=models.SET_NULL, null=True, blank=True, related_name='orders')
     message = models.TextField(null=True, blank=True)
-    utm = models.CharField(max_length=50, null=True, blank=True)
+    utm = models.CharField(max_length=255, null=True, blank=True)
 
 
     class Meta:
