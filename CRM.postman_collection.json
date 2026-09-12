@@ -1,0 +1,2014 @@
+{
+  "info": {
+    "_postman_id": "afaa539b-2b97-40b5-85ca-f6a0be967e96",
+    "name": "CRM",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52315553",
+    "_collection_link": "https://go.postman.co/collection/52315553-afaa539b-2b97-40b5-85ca-f6a0be967e96?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "res = pm.response.json()\r",
+                  "pm.environment.set(\"access\", res.access);\r",
+                  "pm.environment.set(\"refresh\", res.refresh);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "admin@gmail.com",
+                  "type": "text",
+                  "uuid": "3c35e3df-6813-4295-a48f-667f862a7283"
+                },
+                {
+                  "key": "password",
+                  "value": "admin",
+                  "type": "text",
+                  "uuid": "57ad3e2f-d090-457a-a079-326f6e3dee49"
+                },
+                {
+                  "key": "email",
+                  "value": "test@gmail.com",
+                  "type": "text",
+                  "uuid": "26a6f74e-9442-4088-aa26-b1a753cdd430",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "AA12345Q",
+                  "type": "text",
+                  "uuid": "28c4b181-d14e-4b64-bc94-24ac339fef73",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "oleg@gmail.com",
+                  "type": "text",
+                  "uuid": "ec7f4538-c9b0-4f6e-9d03-ce40926c8857",
+                  "disabled": true
+                },
+                {
+                  "key": "password",
+                  "value": "Aaa12345",
+                  "type": "text",
+                  "uuid": "2bdfe018-7517-4113-9b1d-f2648b445f46",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/login/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "refresh",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "refresh",
+                  "value": "{{refresh}}",
+                  "type": "text",
+                  "uuid": "c47fba5f-591d-4844-b9f3-520741915f8b"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/refresh/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "refresh",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "activate manager",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "password",
+                  "value": "AA12345Q",
+                  "type": "text",
+                  "uuid": "be2dc876-1d5e-44cd-8e25-d27bbcd31333"
+                },
+                {
+                  "key": "confirm_password",
+                  "value": "AA12345Q",
+                  "type": "text",
+                  "uuid": "08ca132c-57d0-4942-9179-a94125bff527"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/activate/{{activation_token}}/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "activate",
+                "{{activation_token}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "password recovery",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "password",
+                  "value": "Aaa12345",
+                  "type": "text",
+                  "uuid": "8280b4f9-5be9-4da7-a31d-6a9309ced8b6"
+                },
+                {
+                  "key": "confirm_password",
+                  "value": "Aaa12345",
+                  "type": "text",
+                  "uuid": "a53cd5d4-641e-4b7c-a85d-e40e87e9bcbd"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/recovery/{{recovery_token}}/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "recovery",
+                "{{recovery_token}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "refresh",
+                  "value": "{{refresh}}",
+                  "type": "text",
+                  "uuid": "b9259afc-3714-4b8c-8ef0-aa17ff8830ce"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/auth/logout/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "auth",
+                "logout",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "item": [
+        {
+          "name": "get orders",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/orders/?order=-id",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "-id"
+                },
+                {
+                  "key": "order",
+                  "value": "name",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "surname",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "email",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "phone",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "age",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "course",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "course_format",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "course_type",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "status",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "sum",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "alreadyPaid",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "order",
+                  "value": "created_at",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "Ол",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "surname",
+                  "value": "ро",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "uk",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "phone",
+                  "value": "067",
+                  "disabled": true
+                },
+                {
+                  "key": "age",
+                  "value": "18",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "course",
+                  "value": "JCX",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "course_format",
+                  "value": "online",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "course_type",
+                  "value": "premium",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "New",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "group",
+                  "value": "",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "start_date",
+                  "value": "2025-05-14",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "end_date",
+                  "value": "2025-05-14",
+                  "disabled": true
+                },
+                {
+                  "key": "filter_my",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get orders",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{host}}/orders/?order=-id&name=Ол&age=18",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "-id"
+                    },
+                    {
+                      "key": "order",
+                      "value": "name",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "surname",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "email",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "phone",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "age",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "course",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "course_format",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "course_type",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "status",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "sum",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "alreadyPaid",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "order",
+                      "value": "created_at",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "name",
+                      "value": "Ол",
+                      "type": "text"
+                    },
+                    {
+                      "key": "surname",
+                      "value": "ро",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "email",
+                      "value": "uk",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phone",
+                      "value": "067",
+                      "disabled": true
+                    },
+                    {
+                      "key": "age",
+                      "value": "18",
+                      "type": "text"
+                    },
+                    {
+                      "key": "course",
+                      "value": "JCX",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "course_format",
+                      "value": "online",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "course_type",
+                      "value": "premium",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "New",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "group",
+                      "value": "",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-05-14",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-05-14",
+                      "disabled": true
+                    },
+                    {
+                      "key": "filter_my",
+                      "value": "1",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 14:39:44 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1548"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"total_items\": 5,\n    \"total_pages\": 1,\n    \"prev\": false,\n    \"next\": false,\n    \"data\": [\n        {\n            \"id\": 473,\n            \"name\": \"Володимир\",\n            \"surname\": \"\",\n            \"email\": \"\",\n            \"phone\": \"\",\n            \"age\": 18,\n            \"course\": \"FE\",\n            \"course_format\": \"online\",\n            \"course_type\": \"minimal\",\n            \"status\": null,\n            \"sum\": null,\n            \"alreadyPaid\": null,\n            \"group\": null,\n            \"created_at\": \"2022-05-28T07:10:00Z\",\n            \"manager\": null,\n            \"message\": null,\n            \"utm\": \"html-2022-5-1_target-05-2022\"\n        },\n        {\n            \"id\": 472,\n            \"name\": \"Володимир\",\n            \"surname\": \"\",\n            \"email\": \"\",\n            \"phone\": \"\",\n            \"age\": 18,\n            \"course\": \"FE\",\n            \"course_format\": \"online\",\n            \"course_type\": \"vip\",\n            \"status\": null,\n            \"sum\": null,\n            \"alreadyPaid\": null,\n            \"group\": null,\n            \"created_at\": \"2022-05-28T07:09:57Z\",\n            \"manager\": null,\n            \"message\": null,\n            \"utm\": \"html-2022-5-1_target-05-2022\"\n        },\n        {\n            \"id\": 471,\n            \"name\": \"Володимир\",\n            \"surname\": \"\",\n            \"email\": \"\",\n            \"phone\": \"\",\n            \"age\": 18,\n            \"course\": \"FE\",\n            \"course_format\": \"online\",\n            \"course_type\": \"premium\",\n            \"status\": null,\n            \"sum\": null,\n            \"alreadyPaid\": null,\n            \"group\": null,\n            \"created_at\": \"2022-05-28T07:09:53Z\",\n            \"manager\": null,\n            \"message\": null,\n            \"utm\": \"html-2022-5-1_target-05-2022\"\n        },\n        {\n            \"id\": 470,\n            \"name\": \"Володимир\",\n            \"surname\": \"\",\n            \"email\": \"\",\n            \"phone\": \"\",\n            \"age\": 18,\n            \"course\": \"FE\",\n            \"course_format\": \"online\",\n            \"course_type\": \"pro\",\n            \"status\": null,\n            \"sum\": null,\n            \"alreadyPaid\": null,\n            \"group\": null,\n            \"created_at\": \"2022-05-28T07:09:42Z\",\n            \"manager\": null,\n            \"message\": null,\n            \"utm\": \"html-2022-5-1_target-05-2022\"\n        },\n        {\n            \"id\": 350,\n            \"name\": \"Олег\",\n            \"surname\": \"\",\n            \"email\": \"\",\n            \"phone\": \"\",\n            \"age\": 18,\n            \"course\": \"FE\",\n            \"course_format\": \"static\",\n            \"course_type\": \"vip\",\n            \"status\": null,\n            \"sum\": null,\n            \"alreadyPaid\": null,\n            \"group\": null,\n            \"created_at\": \"2022-04-30T10:44:39Z\",\n            \"manager\": null,\n            \"message\": null,\n            \"utm\": \"\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "create order",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "Олена",
+                  "type": "text",
+                  "uuid": "676ed7f7-9faf-40cb-8dfd-5d6e46e43c7e"
+                },
+                {
+                  "key": "surname",
+                  "value": "Іваіва",
+                  "type": "text",
+                  "uuid": "0bf0b72c-cc11-46b4-8db3-6731b4f307d7"
+                },
+                {
+                  "key": "email",
+                  "value": "olena@gmail.com",
+                  "type": "text",
+                  "uuid": "e218b751-34a9-47b9-b981-2c2b5a1afe62"
+                },
+                {
+                  "key": "phone",
+                  "value": "+380678741298",
+                  "type": "text",
+                  "uuid": "5e512189-dc68-42cd-b611-b06540a6b1cf"
+                },
+                {
+                  "key": "age",
+                  "value": "22",
+                  "type": "text",
+                  "uuid": "99f0a048-4608-42e8-9143-0d14621b5936"
+                },
+                {
+                  "key": "course",
+                  "value": "JCX",
+                  "type": "text",
+                  "uuid": "cf2d7eb9-0e44-4d10-a303-e28ec5d9a763"
+                },
+                {
+                  "key": "course_format",
+                  "value": "online",
+                  "type": "text",
+                  "uuid": "00270e25-2912-4385-98df-6b6e138c5f75"
+                },
+                {
+                  "key": "course_type",
+                  "value": "premium",
+                  "type": "text",
+                  "uuid": "d1d98c10-1b59-4cdd-ba11-88a8a6b492ba"
+                },
+                {
+                  "key": "status",
+                  "value": "New",
+                  "type": "text",
+                  "uuid": "946702d3-9d84-4e33-b450-c7a3d16cb61d"
+                },
+                {
+                  "key": "sum",
+                  "value": "12312333",
+                  "type": "text",
+                  "uuid": "5db90347-5a15-4553-a694-0767debe05b0"
+                },
+                {
+                  "key": "alreadyPaid",
+                  "value": "12333",
+                  "type": "text",
+                  "uuid": "4e476ee8-6ccb-4c35-ae2d-066a17eba69c"
+                },
+                {
+                  "key": "group",
+                  "value": "new group",
+                  "type": "text",
+                  "uuid": "a0ba56c7-dbe0-40df-a1ed-baee0aeea3c6"
+                },
+                {
+                  "key": "message",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "1b4d1ab2-705b-44b2-a9a1-53d9d21f569c",
+                  "disabled": true
+                },
+                {
+                  "key": "utm",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "9549820f-392b-46cd-a6ef-dedd96fce804",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/orders/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "create order",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Олена",
+                      "type": "text",
+                      "uuid": "676ed7f7-9faf-40cb-8dfd-5d6e46e43c7e"
+                    },
+                    {
+                      "key": "surname",
+                      "value": "Іваіва",
+                      "type": "text",
+                      "uuid": "0bf0b72c-cc11-46b4-8db3-6731b4f307d7"
+                    },
+                    {
+                      "key": "email",
+                      "value": "olena@gmail.com",
+                      "type": "text",
+                      "uuid": "e218b751-34a9-47b9-b981-2c2b5a1afe62"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "+380678741298",
+                      "type": "text",
+                      "uuid": "5e512189-dc68-42cd-b611-b06540a6b1cf"
+                    },
+                    {
+                      "key": "age",
+                      "value": "22",
+                      "type": "text",
+                      "uuid": "99f0a048-4608-42e8-9143-0d14621b5936"
+                    },
+                    {
+                      "key": "course",
+                      "value": "JCX",
+                      "type": "text",
+                      "uuid": "cf2d7eb9-0e44-4d10-a303-e28ec5d9a763"
+                    },
+                    {
+                      "key": "course_format",
+                      "value": "online",
+                      "type": "text",
+                      "uuid": "00270e25-2912-4385-98df-6b6e138c5f75"
+                    },
+                    {
+                      "key": "course_type",
+                      "value": "premium",
+                      "type": "text",
+                      "uuid": "d1d98c10-1b59-4cdd-ba11-88a8a6b492ba"
+                    },
+                    {
+                      "key": "status",
+                      "value": "New",
+                      "type": "text",
+                      "uuid": "946702d3-9d84-4e33-b450-c7a3d16cb61d"
+                    },
+                    {
+                      "key": "sum",
+                      "value": "12312333",
+                      "type": "text",
+                      "uuid": "5db90347-5a15-4553-a694-0767debe05b0"
+                    },
+                    {
+                      "key": "alreadyPaid",
+                      "value": "12333",
+                      "type": "text",
+                      "uuid": "4e476ee8-6ccb-4c35-ae2d-066a17eba69c"
+                    },
+                    {
+                      "key": "group",
+                      "value": "new group",
+                      "type": "text",
+                      "uuid": "a0ba56c7-dbe0-40df-a1ed-baee0aeea3c6"
+                    },
+                    {
+                      "key": "message",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "1b4d1ab2-705b-44b2-a9a1-53d9d21f569c",
+                      "disabled": true
+                    },
+                    {
+                      "key": "utm",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "9549820f-392b-46cd-a6ef-dedd96fce804",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{host}}/orders/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 12:41:18 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "344"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 501,\n    \"name\": \"Олена\",\n    \"surname\": \"Іваіва\",\n    \"email\": \"olena@gmail.com\",\n    \"phone\": \"+380678741298\",\n    \"age\": 22,\n    \"course\": \"JCX\",\n    \"course_format\": \"online\",\n    \"course_type\": \"premium\",\n    \"status\": \"New\",\n    \"sum\": 12312333,\n    \"alreadyPaid\": 12333,\n    \"group\": \"GroupModel object (1)\",\n    \"created_at\": \"2026-09-11T12:41:18.610118Z\",\n    \"manager\": null,\n    \"message\": null,\n    \"utm\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "get comments of order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/orders/413/comments/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                "413",
+                "comments",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get comments of order",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{host}}/orders/413/comments/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "413",
+                    "comments",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Sep 2026 17:27:22 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "93"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n    {\n        \"id\": 2,\n        \"order\": 413,\n        \"user\": \" \",\n        \"message\": \"Cool\",\n        \"created_at\": \"2026-09-10T17:06:11.677986Z\"\n    }\n]"
+            }
+          ]
+        },
+        {
+          "name": "add comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"message\": \"Cool\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/orders/413/comments/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                "413",
+                "comments",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "add comment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"message\": \"Cool\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/orders/413/comments/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "413",
+                    "comments",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 14:44:32 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "387"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"comment\": {\n        \"id\": 3,\n        \"order\": 413,\n        \"user\": \" \",\n        \"message\": \"Cool\",\n        \"created_at\": \"2026-09-11T14:44:32.566540Z\"\n    },\n    \"order\": {\n        \"id\": 413,\n        \"name\": \"Кирило\",\n        \"surname\": \"\",\n        \"email\": \"\",\n        \"phone\": \"\",\n        \"age\": 15,\n        \"course\": \"PCX\",\n        \"course_format\": \"online\",\n        \"course_type\": \"minimal\",\n        \"status\": \"In work\",\n        \"sum\": null,\n        \"alreadyPaid\": null,\n        \"group\": null,\n        \"created_at\": \"2022-05-15T19:58:33Z\",\n        \"manager\": \"\",\n        \"message\": null,\n        \"utm\": \"\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "release order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/orders/14/release/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                "14",
+                "release",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "release order",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{host}}/orders/14/release/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "14",
+                    "release",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Thu, 10 Sep 2026 17:27:39 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "34"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n    \"This order has another manager\"\n]"
+            }
+          ]
+        },
+        {
+          "name": "edit order",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "3b76d47a-6e91-414b-aac2-2f25d50b78f4",
+                  "disabled": true
+                },
+                {
+                  "key": "surname",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "dcf45cb1-b3a4-4c72-9266-521c5d5a85a5",
+                  "disabled": true
+                },
+                {
+                  "key": "age",
+                  "value": "23",
+                  "type": "text",
+                  "uuid": "a77695b7-5524-4a71-bed6-5e6219d8117a",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "afee5062-3e53-4c12-8ac6-d6f709be729e",
+                  "disabled": true
+                },
+                {
+                  "key": "sum",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "ceea2941-c25d-4ad6-80c3-8cb1aa3396bd",
+                  "disabled": true
+                },
+                {
+                  "key": "alreadyPaid",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "bded1e2c-a0b0-4cf8-bde7-72aa89b76b5d",
+                  "disabled": true
+                },
+                {
+                  "key": "group",
+                  "value": "sept 2026",
+                  "type": "text",
+                  "uuid": "4334167f-97aa-46e1-a858-d04d2067324d"
+                },
+                {
+                  "key": "course",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "0050f059-e30c-4b8c-888d-21aacb626388",
+                  "disabled": true
+                },
+                {
+                  "key": "course_format",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "470fb35d-56de-45b3-8e2b-5f87ee7b18a1",
+                  "disabled": true
+                },
+                {
+                  "key": "course_type",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "268988fc-c50f-443a-828d-dc1581f4eaa4",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/orders/17/edit/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                "17",
+                "edit",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "edit order",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "3b76d47a-6e91-414b-aac2-2f25d50b78f4",
+                      "disabled": true
+                    },
+                    {
+                      "key": "surname",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "dcf45cb1-b3a4-4c72-9266-521c5d5a85a5",
+                      "disabled": true
+                    },
+                    {
+                      "key": "age",
+                      "value": "23",
+                      "type": "text",
+                      "uuid": "a77695b7-5524-4a71-bed6-5e6219d8117a",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "afee5062-3e53-4c12-8ac6-d6f709be729e",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sum",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "ceea2941-c25d-4ad6-80c3-8cb1aa3396bd",
+                      "disabled": true
+                    },
+                    {
+                      "key": "alreadyPaid",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "bded1e2c-a0b0-4cf8-bde7-72aa89b76b5d",
+                      "disabled": true
+                    },
+                    {
+                      "key": "group",
+                      "value": "sept 2026",
+                      "type": "text",
+                      "uuid": "4334167f-97aa-46e1-a858-d04d2067324d"
+                    },
+                    {
+                      "key": "course",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "0050f059-e30c-4b8c-888d-21aacb626388",
+                      "disabled": true
+                    },
+                    {
+                      "key": "course_format",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "470fb35d-56de-45b3-8e2b-5f87ee7b18a1",
+                      "disabled": true
+                    },
+                    {
+                      "key": "course_type",
+                      "value": "",
+                      "type": "text",
+                      "uuid": "268988fc-c50f-443a-828d-dc1581f4eaa4",
+                      "disabled": true
+                    }
+                  ],
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/orders/17/edit/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "17",
+                    "edit",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 13:53:47 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PUT, PATCH, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "333"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 17,\n    \"name\": \"Богдан\",\n    \"surname\": \"беляева\",\n    \"email\": \"joasia@plyty-betonowe.com.pl\",\n    \"phone\": \"8(705) 179-5\",\n    \"age\": 23,\n    \"course\": \"PCX\",\n    \"course_format\": \"online\",\n    \"course_type\": \"premium\",\n    \"status\": null,\n    \"sum\": null,\n    \"alreadyPaid\": null,\n    \"group\": \"sept 2026\",\n    \"created_at\": \"2021-11-05T11:48:39Z\",\n    \"manager\": \"\",\n    \"message\": null,\n    \"utm\": \"gad\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "add group",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "group_name",
+                  "value": "sept 2026",
+                  "type": "text",
+                  "uuid": "b5dd5eab-f2b0-47bf-9e93-4b693826f3ff"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/orders/groups/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                "groups",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "add group",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "group_name",
+                      "value": "sept 2026",
+                      "type": "text",
+                      "uuid": "b5dd5eab-f2b0-47bf-9e93-4b693826f3ff"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{host}}/orders/groups/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "groups",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 13:45:56 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "33"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"id\": 2,\n    \"group_name\": \"sept 2026\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "get groups",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/orders/groups/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "orders",
+                "groups",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "get groups",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{host}}/orders/groups/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "orders",
+                    "groups",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 13:46:48 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "69"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n    {\n        \"id\": 1,\n        \"group_name\": \"new group\"\n    },\n    {\n        \"id\": 2,\n        \"group_name\": \"sept 2026\"\n    }\n]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "admin pannel",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/adminPannel/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "adminPannel",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "admin pannel",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{host}}/adminPannel/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "adminPannel",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 14:45:29 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, HEAD, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "612"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"total_items\": 3,\n    \"total_pages\": 1,\n    \"prev\": false,\n    \"next\": false,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"email\": \"john@gmail.com\",\n            \"name\": \"Джон\",\n            \"surname\": \"Олегович\",\n            \"is_active\": false,\n            \"last_login\": null,\n            \"total\": 0,\n            \"in_work\": 0,\n            \"agree\": 0,\n            \"disagree\": 0,\n            \"dubbing\": 0,\n            \"new\": 0\n        },\n        {\n            \"id\": 3,\n            \"email\": \"oleg@gmail.com\",\n            \"name\": \"Олег\",\n            \"surname\": \"Олегович\",\n            \"is_active\": true,\n            \"last_login\": null,\n            \"total\": 0,\n            \"in_work\": 0,\n            \"agree\": 0,\n            \"disagree\": 0,\n            \"dubbing\": 0,\n            \"new\": 0\n        },\n        {\n            \"id\": 4,\n            \"email\": \"test@gmail.com\",\n            \"name\": \"Олег\",\n            \"surname\": \"Олегович\",\n            \"is_active\": true,\n            \"last_login\": null,\n            \"total\": 0,\n            \"in_work\": 0,\n            \"agree\": 0,\n            \"disagree\": 0,\n            \"dubbing\": 0,\n            \"new\": 0\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "create manager",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "pm.environment.set(\"manager_id\", res.user.id);\r",
+                  "const activationToken = res.activation_link.split('/').pop();\r",
+                  "pm.environment.set(\"activation_token\", activationToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "test@gmail.com",
+                  "type": "text",
+                  "uuid": "36c36d58-ea2a-47da-afa8-8f57b983122a"
+                },
+                {
+                  "key": "name",
+                  "value": "Олег",
+                  "type": "text",
+                  "uuid": "165483a5-eae5-4e13-ae15-95a4911e1d4a"
+                },
+                {
+                  "key": "surname",
+                  "value": "Олегович",
+                  "type": "text",
+                  "uuid": "5d8cb0d3-8e93-4a90-b44a-4dd284c888b8"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{host}}/adminPannel/create/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "adminPannel",
+                "create",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "generate recovery link",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();\r",
+                  "\r",
+                  "const recoveryToken = res.recovery_link.split('/').pop();\r",
+                  "pm.environment.set(\"recovery_token\", recoveryToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{host}}/adminPannel/{{manager_id}}/recovery/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "adminPannel",
+                "{{manager_id}}",
+                "recovery",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ban / unban manager",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{access}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"is_active\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{host}}/adminPannel/{{manager_id}}/status/",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "adminPannel",
+                "{{manager_id}}",
+                "status",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "ban / unban manager",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"is_active\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{host}}/adminPannel/{{manager_id}}/status/",
+                  "host": [
+                    "{{host}}"
+                  ],
+                  "path": [
+                    "adminPannel",
+                    "{{manager_id}}",
+                    "status",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Fri, 11 Sep 2026 14:29:05 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.13.15"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept"
+                },
+                {
+                  "key": "Allow",
+                  "value": "PATCH, OPTIONS"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "124"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"user\": {\n        \"id\": 3,\n        \"email\": \"oleg@gmail.com\",\n        \"name\": \"Олег\",\n        \"surname\": \"Олегович\",\n        \"is_active\": true,\n        \"last_login\": null\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
