@@ -3,6 +3,7 @@ from io import BytesIO
 from core.pagination import PagePagination
 from core.permissions import (IsActiveUser, IsAdminOrManagerRole,
                               IsAssignmentManager)
+from django.db.models import Count, Q
 from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from openpyxl import Workbook
@@ -10,7 +11,7 @@ from rest_framework import status
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.generics import (GenericAPIView, ListCreateAPIView,
                                      UpdateAPIView, get_object_or_404)
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -19,7 +20,8 @@ from apps.orders.filters import OrderFilter
 from apps.orders.models import (CommentModel, GroupModel, OrderModel,
                                 OrderStatusModel)
 from apps.orders.serializers import (CommentSerializer, GroupSerializer,
-                                     OrderSerializer)
+                                     OrderSerializer,
+                                     OrdersStatisticsSerializer)
 
 
 class OrderListView(ListCreateAPIView):
@@ -29,6 +31,22 @@ class OrderListView(ListCreateAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = OrderFilter
     pagination_class = PagePagination
+
+class OrderStatisticsView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request, *args, **kwargs):
+
+        stats = OrderModel.objects.aggregate(
+            total = Count('id'),
+            new = Count('id', filter = Q(status = OrderStatusModel.NEW)),
+            in_work = Count('id', filter = Q(status = OrderStatusModel.INWORK)),
+            agree = Count('id', filter = Q(status = OrderStatusModel.AGREED)),
+            disagree = Count('id', filter = Q(status = OrderStatusModel.DISAGREED)),
+            dubbing = Count('id', filter = Q(status = OrderStatusModel.DUBBING))
+        )
+        serializer = OrdersStatisticsSerializer(stats)
+        return Response(serializer.data)
 
 
 class CommentsView(ListCreateAPIView):
