@@ -1,15 +1,18 @@
+from io import BytesIO
+
 from core.pagination import PagePagination
-from core.permissions import (IsActiveUser, IsAdminOrManagerRole, IsAdminRole,
-                              IsAssignmentManager, IsManagerRole)
-from django.db.models import manager
+from core.permissions import (IsActiveUser, IsAdminOrManagerRole,
+                              IsAssignmentManager)
+from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
+from openpyxl import Workbook
 from rest_framework import status
 from rest_framework.exceptions import PermissionDenied, ValidationError
-from rest_framework.generics import (CreateAPIView, GenericAPIView,
-                                     ListCreateAPIView, UpdateAPIView,
-                                     get_object_or_404)
+from rest_framework.generics import (GenericAPIView, ListCreateAPIView,
+                                     UpdateAPIView, get_object_or_404)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.orders.filters import OrderFilter
@@ -20,8 +23,7 @@ from apps.orders.serializers import (CommentSerializer, GroupSerializer,
 
 
 class OrderListView(ListCreateAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsActiveUser]
     queryset = OrderModel.objects.all()
     serializer_class = OrderSerializer
     filter_backends = [DjangoFilterBackend]
@@ -30,7 +32,6 @@ class OrderListView(ListCreateAPIView):
 
 
 class CommentsView(ListCreateAPIView):
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsActiveUser, IsAdminOrManagerRole]
     serializer_class = CommentSerializer
 
@@ -60,7 +61,6 @@ class CommentsView(ListCreateAPIView):
 
 
 class ReleaseOrderManager(GenericAPIView):
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsActiveUser, IsAssignmentManager]
     queryset = OrderModel.objects.all()
 
@@ -79,16 +79,66 @@ class ReleaseOrderManager(GenericAPIView):
         serializer = OrderSerializer(order)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class EditOrdersView(UpdateAPIView):
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsActiveUser, IsAssignmentManager]
     queryset = OrderModel.objects.all()
     serializer_class = OrderSerializer
     lookup_url_kwarg = 'order_id'
 
+
 class GroupListView(ListCreateAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsActiveUser, IsAdminOrManagerRole]
     queryset = GroupModel.objects.all()
     serializer_class = GroupSerializer
-    
+
+
+class ExcelExport(APIView):
+    permission_classes = [IsAuthenticated, IsActiveUser, IsAdminOrManagerRole]
+
+    def get(self, request, *args, **kwargs):
+        base_queryset = OrderModel.objects.select_related('manager', 'group').all()
+        filtered_qs = OrderFilter(request.GET, queryset=OrderModel.objects.all()).qs
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = 'Orders'
+
+        headers = [
+            'id', 'name', 'surname', 'email', 'phone', 'age', 'course',
+            'course_format', 'course_type', 'status', 'sum', 'alreadyPaid',
+            'group_name', 'created_at', 'manager_email', 'message', 'utm'
+        ]
+        sheet.append(headers)
+
+        for order in filtered_qs:
+            created_at = order.created_at.replace(tzinfo=None) if order.created_at else None
+            sheet.append([
+                order.id,
+                order.name,
+                order.surname,
+                order.email,
+                order.phone,
+                order.age,
+                order.course,
+                order.course_format,
+                order.course_type,
+                order.status,
+                order.sum,
+                order.alreadyPaid,
+                order.group.group_name if order.group else None,
+                created_at,
+                order.manager.email if order.manager else None,
+                order.message,
+                order.utm,
+            ])
+
+        buffer = BytesIO()
+        workbook.save(buffer)
+        buffer.seek(0)
+
+        response = HttpResponse(
+            buffer.read(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        response['Content-Disposition'] = 'attachment; filename="orders.xlsx"'
+        return response

@@ -1,17 +1,15 @@
 from typing import Type
 
-from apps.user.serializers import UserModel
+from apps.user.models import UserModel
 from core.enums.action_token_enum import ActionTokenEnum
 from core.exceptions.jwt_exception import JWTException
-from rest_framework.generics import get_object_or_404
-from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.generics import GenericAPIView, get_object_or_404
 from rest_framework_simplejwt.tokens import BlacklistMixin, Token
 
+ActionTokenClassType = Type[BlacklistMixin | Token]
 
 class ActionToken(BlacklistMixin, Token):
     pass
-
-ActionTokenClassType = Type[ActionToken]
 
 class ActivateToken(ActionToken):
     token_type = ActionTokenEnum.ACTIVATE.token_type
@@ -20,6 +18,7 @@ class ActivateToken(ActionToken):
 class RecoveryToken(ActionToken):
     token_type = ActionTokenEnum.RECOVERY.token_type
     lifetime = ActionTokenEnum.RECOVERY.lifetime
+
 
 class JWTService:
     @staticmethod
@@ -31,9 +30,10 @@ class JWTService:
         try:
             token_res = token_class(token)
             token_res.check_blacklist()
-        except TokenError:
+        except Exception:
             raise JWTException
 
-        user_id = token_res.payload['user_id']
+        token_res.blacklist()
+        user_id = token_res.payload.get('user_id')
         return get_object_or_404(UserModel, pk=user_id)
 

@@ -34,3 +34,8 @@ services:
       - "3000:3000"
     restart: on-failure
     command: sh -c "npm install && npm start"
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: on-failure

@@ -7,7 +7,6 @@ from rest_framework.generics import (CreateAPIView, GenericAPIView,
                                      ListAPIView, get_object_or_404)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.orders.models import OrderStatusModel
 from apps.user.models import UserRole
@@ -26,7 +25,6 @@ class ManagerListView(ListAPIView):
                                           dubbing=Count('orders', filter=Q(orders__status=OrderStatusModel.DUBBING)),
                                           new=Count('orders', filter=Q(orders__status=OrderStatusModel.NEW)));
 
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]
     pagination_class = PagePagination
 
@@ -34,7 +32,6 @@ class ManagerListView(ListAPIView):
 class CreateManagerView(CreateAPIView):
     queryset = UserModel.objects.all()
     serializer_class = ManagerCreateSerializer
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]
 
     def create(self, request, *args, **kwargs):
@@ -49,7 +46,6 @@ class CreateManagerView(CreateAPIView):
 
 class GenerateRecoveryLinkView(GenericAPIView):
     queryset = UserModel.objects.all()
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]
 
     def patch(self, request, *args, **kwargs):
@@ -64,7 +60,6 @@ class GenerateRecoveryLinkView(GenericAPIView):
 
 class BanUnbanUserView(GenericAPIView):
     queryset = UserModel.objects.all()
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminRole, IsActiveUser]
 
     def patch(self, request, *args, **kwargs):

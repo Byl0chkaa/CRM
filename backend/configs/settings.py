@@ -35,6 +35,7 @@ AUTH_USER_MODEL = 'user.UserModel'
 
 INSTALLED_APPS = [
     'django.contrib.auth',
+    'django_filters',
     'django.contrib.contenttypes',
     'rest_framework',
     'django.contrib.staticfiles',

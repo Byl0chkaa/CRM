@@ -1,7 +1,8 @@
 from django.urls import path
 
-from apps.orders.views import (CommentsView, EditOrdersView, GroupListView,
-                               OrderListView, ReleaseOrderManager)
+from apps.orders.views import (CommentsView, EditOrdersView, ExcelExport,
+                               GroupListView, OrderListView,
+                               ReleaseOrderManager)
 
 urlpatterns = [
     path('', OrderListView.as_view(), name='order_list'),
@@ -9,4 +10,5 @@ urlpatterns = [
     path('<int:order_id>/comments/', CommentsView.as_view(), name='comment_list'),
     path('<int:order_id>/edit/', EditOrdersView.as_view(), name='edit_orders'),
     path('groups/', GroupListView.as_view(), name='group_list'),
+    path('export/', ExcelExport.as_view(), name='export_orders'),
 ]
